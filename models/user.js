@@ -1,7 +1,7 @@
 const mongoose = require("mongoose")
 
-const {deleteAndChangeRoleValidator} = require("validators/user")
-const {editValidator} = require("../validators/user");
+const {deleteValidator, editValidator} = require("validators/user")
+const {changeRoleValidator} = require("../validators/user");
 
 const userSchema = new mongoose.Schema(
 	{
@@ -42,10 +42,10 @@ userSchema.statics.loginValidation = function (body) {
 
 //* panel
 userSchema.statics.deleteUserValidation = function (body) {
-	return deleteAndChangeRoleValidator.validate(body, { abortEarly: false });
+	return deleteValidator.validate(body, { abortEarly: false });
 };
 userSchema.statics.changeUserRoleValidation = function (body) {
-	return deleteAndChangeRoleValidator.validate(body, { abortEarly: false });
+	return changeRoleValidator.validate(body, { abortEarly: false });
 };
 userSchema.statics.editUserValidation = function (body) {
 	return editValidator.validate(body, { abortEarly: false });

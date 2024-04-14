@@ -53,7 +53,7 @@ exports.delete = async (req, res, next) => {
 			throw err
 		})
 
-		return res.status(201).json({message: "نقش کاربر با موفقیت تغییر کرد"})
+		return res.status(201).json({message: "کاربر با موفقیت حذف شد"})
 	} catch (e) {
 		next(e)
 	}

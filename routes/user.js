@@ -3,6 +3,7 @@ const express = require("express")
 const isAdmin = require("../middlewares/isAdmin")
 const isAuthenticated = require("../middlewares/isAuth")
 const controller = require("../controllers/user")
+const uploadControllers = require("../controllers/upload")
 
 const router = express.Router();
 
@@ -17,11 +18,11 @@ router
 
 router
 	.route('/uploads')
-	.get(isAuthenticated) // will add the controller... this is for user viewing his uploads
+	.get(isAuthenticated, uploadControllers.getUserUploads) // this is for user viewing his uploads
 
 router
 	.route('/uploads/:id')
-	.get(isAuthenticated, isAdmin) // will add the controller... this is for admin viewing who has uploaded what
+	.get(isAuthenticated, isAdmin, uploadControllers.getUserUploads) // this is for admin viewing who has uploaded what
 
 router
 	.route('/role')

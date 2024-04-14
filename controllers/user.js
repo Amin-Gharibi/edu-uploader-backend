@@ -1,9 +1,9 @@
-const model = require("models/user");
+const model = require("../models/user");
 const bcrypt = require("bcrypt");
 
 exports.getAll = async (req, res, next) => {
 	try {
-		const users = await model.find().lean();
+		const users = await model.find({}, '-password').lean();
 
 		return res.status(200).json({users})
 	} catch (e) {

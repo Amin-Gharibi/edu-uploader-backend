@@ -4,8 +4,8 @@ const { setHeaders } = require("./middlewares/headers");
 const { errorHandler } = require("./middlewares/errors");
 
 //*routes import
-const authRoutes = require("routes/auth")
-const userRoutes = require("routes/user")
+const authRoutes = require("./routes/auth")
+const userRoutes = require("./routes/user")
 
 const app = express();
 

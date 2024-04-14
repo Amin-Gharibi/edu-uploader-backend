@@ -1,8 +1,8 @@
 const express = require("express")
 
-const isAdmin = require("middlewares/isAdmin")
-const isAuthenticated = require("middlewares/isAuth")
-const controller = require("controllers/user")
+const isAdmin = require("../middlewares/isAdmin")
+const isAuthenticated = require("../middlewares/isAuth")
+const controller = require("../controllers/user")
 
 const router = express.Router();
 

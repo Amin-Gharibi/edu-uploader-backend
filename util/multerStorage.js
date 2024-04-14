@@ -12,3 +12,14 @@ module.exports.uploadedFileStorage = multer.diskStorage({
 		cb(null, hashedFileName + path.extname(file.originalname));
 	},
 })
+
+module.exports.headerBannersStorage = multer.diskStorage({
+	destination: (req, file, cb) => {
+		cb(null, path.join(__dirname, '..', 'public', 'headerBanners'));
+	},
+	filename: (req, file, cb) => {
+		const sha256 = crypto.createHash('SHA256');
+		const hashedFileName = sha256.update(file.originalname).digest('hex');
+		cb(null, hashedFileName + path.extname(file.originalname));
+	},
+})

@@ -8,6 +8,7 @@ const { errorHandler } = require("./middlewares/errors");
 const authRoutes = require("./routes/auth")
 const userRoutes = require("./routes/user")
 const uploadRoutes = require("./routes/upload")
+const headerBannerRoutes = require("./routes/headerBanner")
 
 const app = express();
 
@@ -16,9 +17,12 @@ app.use(express.urlencoded({ limit: "50mb", extended: true }));
 app.use(express.json({ limit: "50mb" }));
 
 // create dynamic-content container folder
-if (!fs.existsSync(path.join("public", 'uploadedFiles'))){
-	fs.mkdirSync(path.join("public", 'uploadedFiles'), { recursive: true });
-}
+const uploadDirectories = [path.join("public", 'uploadedFiles'), path.join("public", "headerBanners")]
+uploadDirectories.forEach(dir => {
+	if (!fs.existsSync(dir)){
+		fs.mkdirSync(dir, { recursive: true });
+	}
+})
 
 //* CORS Policy Definitions
 app.use(setHeaders);
@@ -30,6 +34,7 @@ app.use(express.static(path.join(__dirname, "public")));
 app.use("/api/auth", authRoutes);
 app.use("/api/user", userRoutes);
 app.use("/api/upload", uploadRoutes);
+app.use("/api/headerBanner", headerBannerRoutes);
 
 //* Error Controller
 app.use((req, res) => {

@@ -1,27 +1,4 @@
-const model = require("../models/headerMenu");
-const headerSubMenuModel = require("../models/headerSubMenu")
-
-exports.getAll = async (req, res, next) => {
-	try {
-		const headerMenus = await model.find().lean();
-		const headerSubMenus = await headerSubMenuModel.find().lean();
-		let array;
-		Array.from(headerMenus).forEach(menu => {
-			array = []
-			Array.from(headerSubMenus).forEach(submenu => {
-				if (submenu.parent?.equals(menu._id)) {
-					delete submenu.parent;
-					array.push(submenu)
-				}
-			})
-			menu.subMenus = array
-		})
-
-		return res.status(200).json({headerMenus})
-	} catch (e) {
-		next(e)
-	}
-}
+const model = require("../models/headerSubMenu");
 
 exports.create = async (req, res, next) => {
 	try {
@@ -68,7 +45,7 @@ exports.delete = async (req, res, next) => {
 		const targetDoc = await model.findById(id)
 
 		if (!targetDoc) {
-			return res.status(404).json({message: "همچین فایلی یافت نشد"})
+			return res.status(404).json({message: "همچین زیر منویی یافت نشد"})
 		}
 
 		await model.findByIdAndDelete(id)

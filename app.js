@@ -9,6 +9,7 @@ const authRoutes = require("./routes/auth")
 const userRoutes = require("./routes/user")
 const uploadRoutes = require("./routes/upload")
 const headerBannerRoutes = require("./routes/headerBanner")
+const headerMenuRoutes = require("./routes/headerMenu")
 
 const app = express();
 
@@ -35,6 +36,7 @@ app.use("/api/auth", authRoutes);
 app.use("/api/user", userRoutes);
 app.use("/api/upload", uploadRoutes);
 app.use("/api/headerBanner", headerBannerRoutes);
+app.use("/api/headerMenu", headerMenuRoutes);
 
 //* Error Controller
 app.use((req, res) => {

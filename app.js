@@ -11,6 +11,7 @@ const uploadRoutes = require("./routes/upload")
 const headerBannerRoutes = require("./routes/headerBanner")
 const headerMenuRoutes = require("./routes/headerMenu")
 const headerSubMenuRoutes = require("./routes/headerSubMenu")
+const newsRoutes = require("./routes/news")
 
 const app = express();
 
@@ -19,7 +20,7 @@ app.use(express.urlencoded({ limit: "50mb", extended: true }));
 app.use(express.json({ limit: "50mb" }));
 
 // create dynamic-content container folder
-const uploadDirectories = [path.join("public", 'uploadedFiles'), path.join("public", "headerBanners")]
+const uploadDirectories = [path.join("public", 'uploadedFiles'), path.join("public", "headerBanners"), path.join("public", "news")]
 uploadDirectories.forEach(dir => {
 	if (!fs.existsSync(dir)){
 		fs.mkdirSync(dir, { recursive: true });
@@ -39,6 +40,7 @@ app.use("/api/upload", uploadRoutes);
 app.use("/api/headerBanner", headerBannerRoutes);
 app.use("/api/headerMenu", headerMenuRoutes);
 app.use("/api/headerSubMenu", headerSubMenuRoutes);
+app.use("/api/news", newsRoutes);
 
 //* Error Controller
 app.use((req, res) => {

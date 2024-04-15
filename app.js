@@ -12,6 +12,7 @@ const headerBannerRoutes = require("./routes/headerBanner")
 const headerMenuRoutes = require("./routes/headerMenu")
 const headerSubMenuRoutes = require("./routes/headerSubMenu")
 const newsRoutes = require("./routes/news")
+const sidebarMenuRoutes = require("./routes/sidebarMenu")
 
 const app = express();
 
@@ -41,6 +42,7 @@ app.use("/api/headerBanner", headerBannerRoutes);
 app.use("/api/headerMenu", headerMenuRoutes);
 app.use("/api/headerSubMenu", headerSubMenuRoutes);
 app.use("/api/news", newsRoutes);
+app.use("/api/sidebarMenu", sidebarMenuRoutes);
 
 //* Error Controller
 app.use((req, res) => {

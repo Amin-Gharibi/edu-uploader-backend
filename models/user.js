@@ -28,6 +28,10 @@ const userSchema = new mongoose.Schema(
 		role: {
 			type: String,
 			enum: ['ADMIN', 'SUPERVISOR']
+		},
+		focusedSubject: {
+			type: mongoose.Types.ObjectId,
+			ref: 'FocusedSubject'
 		}
 	},
 	{ timestamps: true }

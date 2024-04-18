@@ -13,6 +13,7 @@ const headerMenuRoutes = require("./routes/headerMenu")
 const headerSubMenuRoutes = require("./routes/headerSubMenu")
 const newsRoutes = require("./routes/news")
 const sidebarMenuRoutes = require("./routes/sidebarMenu")
+const focusedSubjectRoutes = require("./routes/focusedSubject")
 
 const app = express();
 
@@ -43,6 +44,7 @@ app.use("/api/headerMenu", headerMenuRoutes);
 app.use("/api/headerSubMenu", headerSubMenuRoutes);
 app.use("/api/news", newsRoutes);
 app.use("/api/sidebarMenu", sidebarMenuRoutes);
+app.use("/api/focusedSubject", focusedSubjectRoutes);
 
 //* Error Controller
 app.use((req, res) => {

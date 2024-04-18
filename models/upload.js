@@ -3,21 +3,23 @@ const {createValidator, deleteAndGetUserUploadsValidator} = require("../validato
 
 const uploadsSchema = new mongoose.Schema(
 	{
-		uploaderUser: {
-			type: mongoose.Types.ObjectId,
-			ref: "User"
-		},
 		focusedSubject: {
-			type: String
+			type: mongoose.Types.ObjectId,
+			ref: "FocusedSubject"
 		},
 		schoolType: {
 			type: String,
-			enum: ["PRIVATE", "PUBLIC", "SPECIAL"]
+			enum: ["PUBLIC", "SPECIAL"]
 		},
 		schoolGender: {
 			type: String,
 			enum: ["MALE", "FEMALE"]
 		},
+		examplePages: [
+			{
+				type: String
+			}
+		],
 		file: {
 			type: String
 		}

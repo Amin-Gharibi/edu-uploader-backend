@@ -34,3 +34,14 @@ module.exports.newsStorage = multer.diskStorage({
 		cb(null, hashedFileName + path.extname(file.originalname));
 	},
 })
+
+module.exports.logoStorage = multer.diskStorage({
+	destination: (req, file, cb) => {
+		cb(null, path.join(__dirname, '..', 'public', 'logo'));
+	},
+	filename: (req, file, cb) => {
+		const sha256 = crypto.createHash('SHA256');
+		const hashedFileName = sha256.update(file.originalname).digest('hex');
+		cb(null, hashedFileName + path.extname(file.originalname));
+	},
+})

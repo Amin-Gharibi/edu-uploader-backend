@@ -3,7 +3,7 @@ const headerSubMenuModel = require("../models/headerSubMenu")
 
 exports.getAll = async (req, res, next) => {
 	try {
-		const headerMenus = await model.find().lean();
+		const headerMenus = await model.find().lean().sort('-createdAt');
 		const headerSubMenus = await headerSubMenuModel.find().lean();
 		let array;
 		Array.from(headerMenus).forEach(menu => {
@@ -17,7 +17,7 @@ exports.getAll = async (req, res, next) => {
 			menu.subMenus = array
 		})
 
-		return res.status(200).json({headerMenus})
+		return res.status(200).json([...headerMenus])
 	} catch (e) {
 		next(e)
 	}

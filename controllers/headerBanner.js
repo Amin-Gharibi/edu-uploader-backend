@@ -6,7 +6,7 @@ exports.getAll = async (req, res, next) => {
 	try {
 		const headerBanners = await model.find().lean();
 
-		return res.status(200).json({headerBanners})
+		return res.status(200).json([...headerBanners])
 	} catch (e) {
 		next(e)
 	}

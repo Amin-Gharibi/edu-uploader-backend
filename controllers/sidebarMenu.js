@@ -5,7 +5,7 @@ exports.getAll = async (req, res, next) => {
 		const sidebarMenus = await model.find().lean();
 
 
-		return res.status(200).json({sidebarMenus})
+		return res.status(200).json([...sidebarMenus])
 	} catch (e) {
 		next(e)
 	}

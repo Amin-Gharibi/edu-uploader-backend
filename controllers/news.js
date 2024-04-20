@@ -6,7 +6,7 @@ exports.getAll = async (req, res, next) => {
 	try {
 		const news = await model.find().lean();
 
-		return res.status(200).json({news})
+		return res.status(200).json([...news])
 	} catch (e) {
 		next(e)
 	}
@@ -16,7 +16,7 @@ exports.getLatest = async (req, res, next) => {
 	try {
 		const latestNews = await model.find().lean().sort('-updatedAt').limit(5);
 
-		return res.status(200).json({latestNews})
+		return res.status(200).json([...latestNews])
 	} catch (e) {
 		next(e)
 	}

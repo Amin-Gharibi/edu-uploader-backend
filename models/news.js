@@ -1,5 +1,5 @@
 const mongoose = require("mongoose")
-const {createValidator, editValidator, deleteValidator} = require("../validators/news");
+const {createValidator, editValidator, deleteValidator, get15Validator} = require("../validators/news");
 
 const newsSchema = new mongoose.Schema(
 	{
@@ -25,6 +25,9 @@ newsSchema.statics.editValidation = function (body) {
 }
 newsSchema.statics.deleteValidation = function (body) {
 	return deleteValidator.validate(body, { abortEarly: false })
+}
+newsSchema.statics.get15Validation = function (body) {
+	return get15Validator.validate(body, { abortEarly: false })
 }
 
 const model = new mongoose.model("News", newsSchema)

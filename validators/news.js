@@ -1,5 +1,11 @@
 const yup = require("yup")
 
+const get15Validator = yup.object().shape({
+	startingIndex: yup
+		.string()
+		.required("پاس دادن ایندکس شروعین الزامی است")
+})
+
 const createValidator = yup.object().shape({
 	title: yup
 		.string()
@@ -35,5 +41,6 @@ const deleteValidator = yup.object().shape({
 module.exports = {
 	createValidator,
 	editValidator,
-	deleteValidator
+	deleteValidator,
+	get15Validator
 }

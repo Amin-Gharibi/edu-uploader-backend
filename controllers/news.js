@@ -22,6 +22,21 @@ exports.getLatest = async (req, res, next) => {
 	}
 }
 
+exports.get15 = async (req, res, next) => {
+	try {
+		const { startingIndex } = await model.get15Validation(req.params).catch(err => {
+			err.statusCode = 400
+			throw err
+		})
+		
+		const targetDocs = await model.find().skip(startingIndex).limit(15);
+
+		return res.status(200).json([...targetDocs])
+	} catch (e) {
+		next(e)
+	}
+}
+
 exports.create = async (req, res, next) => {
 	try {
 		const cover = Boolean(req.file?.filename) ? req.file.filename : undefined;

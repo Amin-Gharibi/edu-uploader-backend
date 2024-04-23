@@ -18,6 +18,10 @@ router
 	.get(controller.getLatest);
 
 router
+	.route('/specific/:startingIndex')
+	.get(controller.get15); // this route is for handling infinite loop in front end
+
+router
 	.route('/:id')
 	.put(isAuthenticated, isAdmin, multer({ storage: multerStorage.newsStorage, limits: { fileSize: 1000000000 } }).single("cover"), controller.edit) // this is for admin editing news
 	.delete(isAuthenticated, isAdmin, controller.delete) // this is for admin deleting news

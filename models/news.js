@@ -11,6 +11,10 @@ const newsSchema = new mongoose.Schema(
 		},
 		cover: {
 			type: String
+		},
+		writer: {
+			type: mongoose.Types.ObjectId,
+			ref: 'User'
 		}
 	},
 	{ timestamps: true }

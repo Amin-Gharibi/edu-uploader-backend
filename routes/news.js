@@ -23,6 +23,7 @@ router
 
 router
 	.route('/:id')
+	.get(controller.getOne)
 	.put(isAuthenticated, isAdmin, multer({ storage: multerStorage.newsStorage, limits: { fileSize: 1000000000 } }).single("cover"), controller.edit) // this is for admin editing news
 	.delete(isAuthenticated, isAdmin, controller.delete) // this is for admin deleting news
 

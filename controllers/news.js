@@ -28,7 +28,7 @@ exports.get15 = async (req, res, next) => {
 			err.statusCode = 400
 			throw err
 		})
-		
+
 		const targetDocs = await model.find().sort('-updatedAt').skip(startingIndex).limit(15);
 
 		return res.status(200).json([...targetDocs])
@@ -37,17 +37,35 @@ exports.get15 = async (req, res, next) => {
 	}
 }
 
+exports.getOne = async (req, res, next) => {
+	try {
+		const id = req.params.id
+		if (!id) {
+			return res.status(400).json({ message: "ایدی خبر پاس داده نشده" })
+		}
+
+		const targetNews = await model.findById(id).populate('writer', '-password')
+		if (!targetNews) {
+			return res.status(404).json({ message: "همچین خبری یافت نشد" })
+		}
+
+		return res.status(200).json([targetNews])
+	} catch (e) {
+		next(e)
+	}
+}
+
 exports.create = async (req, res, next) => {
 	try {
 		const cover = Boolean(req.file?.filename) ? req.file.filename : undefined;
-		const validatedFields = await model.createValidation({...req.body, cover}).catch(err => {
+		const validatedFields = await model.createValidation({ ...req.body, cover }).catch(err => {
 			err.statusCode = 400
 			throw err
 		})
 
-		const createdDoc = await model.create(validatedFields);
+		const createdDoc = await model.create({ ...validatedFields, writer: req.user._id });
 
-		return res.status(201).json({message: "با موفقیت اضافه شد", createdDoc})
+		return res.status(201).json({ message: "با موفقیت اضافه شد", createdDoc })
 	} catch (e) {
 		next(e)
 	}
@@ -56,17 +74,17 @@ exports.create = async (req, res, next) => {
 exports.edit = async (req, res, next) => {
 	try {
 		const cover = Boolean(req.file?.filename) ? req.file.filename : undefined;
-		const validatedFields = await model.createValidation({...req.body, ...req.params, cover}).catch(err => {
+		const validatedFields = await model.createValidation({ ...req.body, ...req.params, cover }).catch(err => {
 			err.statusCode = 400
 			throw err
 		})
 
-		const {id, ...body} = validatedFields
+		const { id, ...body } = validatedFields
 
 		const targetDoc = await model.findById(id)
 
 		if (!targetDoc) {
-			return res.status(404).json({message: "document not found"})
+			return res.status(404).json({ message: "document not found" })
 		}
 
 		if (targetDoc.cover !== cover) {
@@ -85,9 +103,9 @@ exports.edit = async (req, res, next) => {
 			});
 		}
 
-		const updatedDoc = await model.findByIdAndUpdate(id, {...body}, {new: true});
+		const updatedDoc = await model.findByIdAndUpdate(id, { ...body, writer: req.user._id }, { new: true });
 
-		return res.status(201).json({message: "با موفقیت آپدیت شد", updatedDoc})
+		return res.status(201).json({ message: "با موفقیت آپدیت شد", updatedDoc })
 	} catch (e) {
 		next(e)
 	}
@@ -95,12 +113,12 @@ exports.edit = async (req, res, next) => {
 
 exports.delete = async (req, res, next) => {
 	try {
-		const {id} = await model.deleteValidation({...req.params});
+		const { id } = await model.deleteValidation({ ...req.params });
 
 		const targetDoc = await model.findById(id)
 
 		if (!targetDoc) {
-			return res.status(404).json({message: "همچین فایلی یافت نشد"})
+			return res.status(404).json({ message: "همچین فایلی یافت نشد" })
 		}
 
 		const filePath = path.join(
@@ -119,7 +137,7 @@ exports.delete = async (req, res, next) => {
 
 		await model.findByIdAndDelete(id)
 
-		return res.status(201).json({message: "با موفقیت حذف شد"})
+		return res.status(201).json({ message: "با موفقیت حذف شد" })
 	} catch (e) {
 		next(e)
 	}

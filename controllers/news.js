@@ -49,7 +49,7 @@ exports.getOne = async (req, res, next) => {
 			return res.status(404).json({ message: "همچین خبری یافت نشد" })
 		}
 
-		return res.status(200).json([targetNews])
+		return res.status(200).json(targetNews)
 	} catch (e) {
 		next(e)
 	}

@@ -29,7 +29,7 @@ exports.get15 = async (req, res, next) => {
 			throw err
 		})
 		
-		const targetDocs = await model.find().skip(startingIndex).limit(15);
+		const targetDocs = await model.find().sort('-updatedAt').skip(startingIndex).limit(15);
 
 		return res.status(200).json([...targetDocs])
 	} catch (e) {

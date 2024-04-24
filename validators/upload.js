@@ -10,7 +10,7 @@ const createParticipantsValidator = yup.object().shape({
 })
 
 const createExamplePagesValidator = yup.object().shape({
-	examplePage: yup
+	pageFile: yup
 		.string()
 		.required("اپلود کردن همه نمونه برگ های اضافه شده الزامی است")
 })
@@ -20,6 +20,9 @@ const createValidator = yup.object().shape({
 		.string()
 		.required("شناسه محور پژوهش الزامی است")
 		.matches(/^[0-9a-fA-F]{24}$/, "شناسه محور پژوهش معتبر نیست"),
+	schoolName: yup
+		.string()
+		.required("وارد کردن نام آموزشگاه الزامی است"),
 	schoolType: yup
 		.string()
 		.oneOf(["PUBLIC", "SPECIAL"], "نوع مدرسه باید یکی از PUBLIC, SPECIAL باشد")
@@ -29,7 +32,7 @@ const createValidator = yup.object().shape({
 		.oneOf(["MALE", "FEMALE"], "جنسیت مدرسه فقط MALE, FEMALE میتواند باشد")
 		.required("جنسیت مدرسه الزامی است"),
 	participants: yup.array().of(createParticipantsValidator),
-	examplePages: yup.array().of(createExamplePagesValidator),
+	examplePages: yup.array(),
 	file: yup
 		.string()
 		.required("فایل اپلود شده الزامی است")

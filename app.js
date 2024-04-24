@@ -19,8 +19,8 @@ const headerLogoRoutes = require("./routes/headerLogo")
 const app = express();
 
 //* BodyParser
-app.use(express.urlencoded({ limit: "50mb", extended: true }));
-app.use(express.json({ limit: "50mb" }));
+app.use(express.urlencoded({ extended: true }));
+app.use(express.json());
 
 // create dynamic-content container folder
 const uploadDirectories = [path.join("public", 'uploadedFiles'), path.join("public", "headerBanners"), path.join("public", "news"), path.join("public", "logo")]

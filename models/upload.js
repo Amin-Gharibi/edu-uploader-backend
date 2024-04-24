@@ -10,18 +10,8 @@ const participantsSchema = new mongoose.Schema({
 	}
 })
 
-const examplePagesSchema = new mongoose.Schema({
-	examplePage: {
-		type: String
-	}
-})
-
 const uploadsSchema = new mongoose.Schema(
 	{
-		uploaderUser: {
-			type: mongoose.Types.ObjectId,
-			ref: "User"
-		},
 		focusedSubject: {
 			type: mongoose.Types.ObjectId,
 			ref: "FocusedSubject"
@@ -41,7 +31,6 @@ const uploadsSchema = new mongoose.Schema(
 			participantsSchema
 		],
 		examplePages: [
-			examplePagesSchema
 		],
 		file: {
 			type: String

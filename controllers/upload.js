@@ -30,17 +30,19 @@ exports.getUserUploads = async (req, res, next) => {
 
 exports.create = async (req, res, next) => {
 	try {
-		const file = Boolean(req.file?.filename) ? req.file.filename : undefined;
-		const validatedFields = await model.createValidation({...req.body, file}).catch(err => {
-			err.statusCode = 400
-			throw err
-		})
+		// const finalFile = req.files.file
+		// const examplePages = req.files.examplePages
+		// console.log({finalFile, examplePages});
+		// const file = Boolean(req.file?.filename) ? req.file.filename : undefined;
+		// console.log(req.body, file);
+		// const validatedFields = await model.createValidation({...req.body, file}).catch(err => {
+		// 	err.statusCode = 400
+		// 	throw err
+		// })
 
-		const uploaderUser = req.user._id;
+		// const createdDoc = await model.create({...validatedFields})
 
-		const createdDoc = await model.create({uploaderUser, ...validatedFields})
-
-		return res.status(201).json({message: "با موفقیت اضافه شد", createdDoc})
+		return res.status(201).json({message: "با موفقیت اضافه شد"})
 	} catch (e) {
 		next(e)
 	}

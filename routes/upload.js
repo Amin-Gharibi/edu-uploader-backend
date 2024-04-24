@@ -11,7 +11,14 @@ const router = express.Router();
 router
 	.route('/')
 	.get(isAuthenticated, isAdmin, controller.getAll) // this is for getting all uploads
-	.post(isAuthenticated, multer({ storage: multerStorage.uploadedFileStorage, limits: { fileSize: 1000000000 } }).single("file"), controller.create)
+	.post(
+		multer({ storage: multerStorage.uploadedFileStorage, limits: { fileSize: 1000000000 } })
+			.fields([
+				{name: "file", maxCount: 1},
+				{name: "examplePages", maxCount: 5}
+			]),
+		controller.create
+	)
 
 router
 	.route('/:id')

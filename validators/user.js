@@ -27,7 +27,8 @@ const editValidator = yup.object().shape({
 	firstName: yup.string(),
 	lastName: yup.string(),
 	areaName: yup.string(),
-	provinceName: yup.string()
+	provinceName: yup.string(),
+	focusedSubject: yup.string()
 })
 
 module.exports = {

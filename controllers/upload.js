@@ -6,7 +6,7 @@ exports.getAll = async (req, res, next) => {
 	try {
 		const uploads = await model.find().populate("uploaderUser", '-password').lean();
 
-		return res.status(200).json({uploads})
+		return res.status(200).json([...uploads])
 	} catch (e) {
 		next(e)
 	}
@@ -22,7 +22,7 @@ exports.getUserUploads = async (req, res, next) => {
 
 		const userUploads = await model.find({uploaderUser: id});
 
-		return res.status(200).json({userUploads})
+		return res.status(200).json([...userUploads])
 	} catch (e) {
 		next(e)
 	}

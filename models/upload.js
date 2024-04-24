@@ -1,11 +1,33 @@
 const mongoose = require("mongoose")
 const {createValidator, deleteAndGetUserUploadsValidator} = require("../validators/upload");
 
+const participantsSchema = new mongoose.Schema({
+	firstName: {
+		type: String
+	},
+	lastName: {
+		type: String
+	}
+})
+
+const examplePagesSchema = new mongoose.Schema({
+	examplePage: {
+		type: String
+	}
+})
+
 const uploadsSchema = new mongoose.Schema(
 	{
+		uploaderUser: {
+			type: mongoose.Types.ObjectId,
+			ref: "User"
+		},
 		focusedSubject: {
 			type: mongoose.Types.ObjectId,
 			ref: "FocusedSubject"
+		},
+		schoolName: {
+			type: String
 		},
 		schoolType: {
 			type: String,
@@ -15,10 +37,11 @@ const uploadsSchema = new mongoose.Schema(
 			type: String,
 			enum: ["MALE", "FEMALE"]
 		},
+		participants: [
+			participantsSchema
+		],
 		examplePages: [
-			{
-				type: String
-			}
+			examplePagesSchema
 		],
 		file: {
 			type: String

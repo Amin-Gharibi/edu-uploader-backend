@@ -22,7 +22,7 @@ exports.getOne = async (req, res, next) => {
 			return res.status(404).json({message: "همچین محوری یافت نشد"})
 		}
 
-		return res.status(200).json(targetDoc)
+		return res.status(200).json(...targetDoc)
 	} catch (e) {
 		next(e)
 	}

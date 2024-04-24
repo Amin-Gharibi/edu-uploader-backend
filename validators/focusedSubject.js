@@ -4,6 +4,9 @@ const createValidator = yup.object().shape({
 	title: yup
 		.string()
 		.required("نام محور پژوهش الزامی است"),
+	enTitle: yup
+		.string()
+		.required("نام انگلیسی محور پژوهش الزامی است")
 })
 
 const editValidator = yup.object().shape({
@@ -12,6 +15,8 @@ const editValidator = yup.object().shape({
 		.required("شناسه کاور الزامی است")
 		.matches(/^[0-9a-fA-F]{24}$/, "شناسه کاور معتبر نیست"),
 	title: yup
+		.string(),
+	enTitle: yup
 		.string()
 })
 

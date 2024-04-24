@@ -6,6 +6,9 @@ const userSchema = new mongoose.Schema(
 	{
 		title: {
 			type: String
+		},
+		enTitle: {
+			type: String
 		}
 	},
 	{ timestamps: true }

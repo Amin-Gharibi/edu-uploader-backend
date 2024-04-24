@@ -10,14 +10,37 @@ exports.getAll = async (req, res, next) => {
 	}
 }
 
+exports.getOne = async (req, res, next) => {
+	try {
+		const enTitle = req.params.id
+		if (!enTitle) {
+			return res.status(400).json({message: "پاس دادن نام انگلیسی محور الزامی است"})
+		}
+
+		const targetDoc = await model.find({enTitle})
+		if (!targetDoc.length) {
+			return res.status(404).json({message: "همچین محوری یافت نشد"})
+		}
+
+		return res.status(200).json(targetDoc)
+	} catch (e) {
+		next(e)
+	}
+}
+
 exports.create = async (req, res, next) => {
 	try {
-		const validatedDate = await model.createFocusedSubjectValidation(req.body).catch(err => {
+		const validatedData = await model.createFocusedSubjectValidation(req.body).catch(err => {
 			err.statusCode = 400
 			throw err
 		})
 
-		const createdFocusedSubject = await model.create({...validatedDate})
+		const isDuplicate = await model.find({enTitle: validatedData.enTitle})
+		if (isDuplicate.length) {
+			return res.status(400).json({message: "محوری با این نام انگلیسی از قبل وجود دارد"})
+		}
+
+		const createdFocusedSubject = await model.create({...validatedData})
 
 		return res.status(201).json({message: "محور با موفقیت ایجاد شد", item: createdFocusedSubject})
 	} catch (e) {
@@ -27,12 +50,23 @@ exports.create = async (req, res, next) => {
 
 exports.edit = async (req, res, next) => {
 	try {
-		const {id, title} = await model.editFocusedSubjectValidation({...req.body, ...req.params}).catch(err => {
+		const {id, title, enTitle} = await model.editFocusedSubjectValidation({...req.body, ...req.params}).catch(err => {
 			err.statusCode = 400
 			throw err
 		})
 
-		const updatedFocusedSubject = await model.findByIdAndUpdate(id, {title}, {new: true})
+		const targetDoc = await model.findById(id)
+		if (!targetDoc) {
+			return res.status(404).json({message: "همچین محوری یافت نشد"})
+		}
+		if (targetDoc?.enTitle !== enTitle) {
+			const isDuplicate = await model.find({enTitle})
+			if (isDuplicate.length) {
+				return res.status(400).json({message: "محوری با این نام انگلیسی از قبل وجود دارد"})
+			}
+		}
+
+		const updatedFocusedSubject = await model.findByIdAndUpdate(id, {title, enTitle}, {new: true})
 
 		return res.status(201).json({message: "محور با موفقیت ویرایش شد", item: updatedFocusedSubject})
 	} catch (e) {

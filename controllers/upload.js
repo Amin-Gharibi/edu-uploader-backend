@@ -4,7 +4,7 @@ const fs = require("fs")
 
 exports.getAll = async (req, res, next) => {
 	try {
-		const uploads = await model.find().populate("uploaderUser", '-password').lean();
+		const uploads = await model.find().populate('focusedSubject').lean();
 
 		return res.status(200).json([...uploads])
 	} catch (e) {

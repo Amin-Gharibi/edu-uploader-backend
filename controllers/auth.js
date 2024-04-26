@@ -1,6 +1,8 @@
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const model = require("../models/user");
+const headerLogoModel = require("../models/headerLogo");
+const uploadsModel = require("../models/upload")
 
 exports.register = async (req, res, next) => {
 	try {
@@ -75,6 +77,42 @@ exports.login = async (req, res, next) => {
 exports.getMe = async (req, res, next) => {
 	try {
 
+	} catch (e) {
+		next(e)
+	}
+}
+
+exports.getPanelInfo = async (req, res, next) => {
+	try {
+		const id = req.user._id
+		
+		const headerLogo = await headerLogoModel.find().lean();
+		const user = await model.findById(id, '-password').populate('focusedSubject');
+		let subjectLatestUploads = undefined
+		let subjectUploadsCount = undefined
+		if (user.role === 'SUPERVISOR') {
+			subjectLatestUploads = await uploadsModel.find({focusedSubject: user.focusedSubject._id})
+			subjectUploadsCount = subjectLatestUploads.length
+			subjectLatestUploads = subjectLatestUploads.slice(0, 10)
+		}
+		let allUploadsCount = undefined
+		let allUsersCount = undefined
+		let latestSignedUsers = undefined
+		let latestUploads = undefined
+		if (user.role === 'ADMIN') {
+			latestUploads = await uploadsModel.find()
+			allUploadsCount = allUploadsCount.length
+			latestUploads = latestUploads.slice(0, 10)
+
+			allUsersCount = await model.find()
+			allUsersCount = allUsersCount.length
+
+			latestSignedUsers = await model.find().sort('-createdAt')
+			latestSignedUsers = latestSignedUsers.slice(0, 10)
+		}
+		
+
+		return res.status(200).json({headerLogo, user, subjectUploadsCount, subjectLatestUploads, allUploadsCount, allUsersCount, latestSignedUsers, latestUploads})
 	} catch (e) {
 		next(e)
 	}

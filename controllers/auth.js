@@ -88,31 +88,28 @@ exports.getPanelInfo = async (req, res, next) => {
 		
 		const headerLogo = await headerLogoModel.find().lean();
 		const user = await model.findById(id, '-password').populate('focusedSubject');
-		let subjectLatestUploads = undefined
+		let latestUploads = undefined
 		let subjectUploadsCount = undefined
 		if (user.role === 'SUPERVISOR') {
-			subjectLatestUploads = await uploadsModel.find({focusedSubject: user.focusedSubject._id})
-			subjectUploadsCount = subjectLatestUploads.length
-			subjectLatestUploads = subjectLatestUploads.slice(0, 10)
+			latestUploads = await uploadsModel.find({focusedSubject: user.focusedSubject._id}).populate('focusedSubject')
+			subjectUploadsCount = latestUploads.length
+			latestUploads = latestUploads.slice(0, 10)
 		}
 		let allUploadsCount = undefined
 		let allUsersCount = undefined
 		let latestSignedUsers = undefined
-		let latestUploads = undefined
 		if (user.role === 'ADMIN') {
-			latestUploads = await uploadsModel.find()
-			allUploadsCount = allUploadsCount.length
+			latestUploads = await uploadsModel.find().populate('focusedSubject')
+			allUploadsCount = latestUploads.length
 			latestUploads = latestUploads.slice(0, 10)
 
-			allUsersCount = await model.find()
+			allUsersCount = await model.find({}, '-password').populate('focusedSubject')
+			latestSignedUsers = allUsersCount.slice(0, 10).reverse()
 			allUsersCount = allUsersCount.length
-
-			latestSignedUsers = await model.find().sort('-createdAt')
-			latestSignedUsers = latestSignedUsers.slice(0, 10)
 		}
 		
 
-		return res.status(200).json({headerLogo, user, subjectUploadsCount, subjectLatestUploads, allUploadsCount, allUsersCount, latestSignedUsers, latestUploads})
+		return res.status(200).json({headerLogo, user, subjectUploadsCount, allUploadsCount, allUsersCount, latestSignedUsers, latestUploads})
 	} catch (e) {
 		next(e)
 	}

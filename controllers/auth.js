@@ -23,10 +23,11 @@ exports.register = async (req, res, next) => {
 
 		body.password = await bcrypt.hash(body.password, 12);
 
-		const user = await model.create({
-			...body,
-			role: countOfRegisteredUser > 0 ? "SUPERVISOR" : "ADMIN",
+		let user = await model.create({
+			...body
 		});
+
+		user = await user.populate('focusedSubject')
 
 		const userObject = user.toObject();
 

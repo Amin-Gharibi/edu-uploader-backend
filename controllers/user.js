@@ -3,9 +3,9 @@ const bcrypt = require("bcrypt");
 
 exports.getAll = async (req, res, next) => {
 	try {
-		const users = await model.find({}, '-password').lean();
+		const users = await model.find({}, '-password').populate('focusedSubject').lean();
 
-		return res.status(200).json({users})
+		return res.status(200).json([...users])
 	} catch (e) {
 		next(e)
 	}

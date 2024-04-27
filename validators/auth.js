@@ -11,7 +11,11 @@ const registerValidator = yup.object().shape({
 	lastName: yup.string().required("نام خانوادگی الزامی می‌باشد"),
 	areaName: yup.string().required("نام منطقه الزامی می‌باشد"),
 	provinceName: yup.string().required("نام استان الزامی می‌باشد"),
-	focusedSubject: yup.string()
+	focusedSubject: yup.string(),
+	role: yup
+		.string()
+		.required("وارد کردن نقش کاربر الزامی است")
+		.oneOf(['ADMIN', 'SUPERVISOR'], 'نقش کاربر باید یکی از SUPERVISOR, ADMIN باشد')
 });
 
 //* Login Schema

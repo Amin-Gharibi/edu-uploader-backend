@@ -4,7 +4,7 @@ exports.getAll = async (req, res, next) => {
 	try {
 		const focusedSubjects = await model.find().lean();
 
-		return res.status(200).json({focusedSubjects})
+		return res.status(200).json([...focusedSubjects])
 	} catch (e) {
 		next(e)
 	}

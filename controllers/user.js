@@ -1,4 +1,5 @@
 const model = require("../models/user");
+const uploadsModel = require("../models/upload")
 const bcrypt = require("bcrypt");
 
 exports.getAll = async (req, res, next) => {
@@ -29,21 +30,6 @@ exports.adminEditingUsers = async (req, res, next) => {
 	}
 }
 
-exports.changeRole = async (req, res, next) => {
-	try {
-		const { id, role } = await model.changeUserRoleValidation({...req.params, ...req.body});
-
-		await model.findByIdAndUpdate(id, {role}).catch(err => {
-			err.statusCode = 500
-			throw err
-		})
-
-		return res.status(201).json({message: "نقش کاربر با موفقیت تغییر کرد"})
-	} catch (e) {
-		next(e)
-	}
-}
-
 exports.delete = async (req, res, next) => {
 	try {
 		const { id } = await model.deleteUserValidation({...req.params});
@@ -54,6 +40,21 @@ exports.delete = async (req, res, next) => {
 		})
 
 		return res.status(201).json({message: "کاربر با موفقیت حذف شد"})
+	} catch (e) {
+		next(e)
+	}
+}
+
+exports.getUserRelatedUploads = async (req, res, next) => {
+	try {
+		let uploads = undefined
+		if (req.user.role === 'ADMIN') {
+			uploads = await uploadsModel.find().populate('focusedSubject')
+		} else if (req.user.role === 'SUPERVISOR') {
+			uploads = await uploadsModel.find({focusedSubject: req.user.focusedSubject}).populate('focusedSubject')
+		}
+
+		return res.status(200).json([...uploads])
 	} catch (e) {
 		next(e)
 	}

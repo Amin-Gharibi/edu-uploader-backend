@@ -19,8 +19,6 @@ exports.register = async (req, res, next) => {
 			});
 		}
 
-		const countOfRegisteredUser = await model.find().count();
-
 		body.password = await bcrypt.hash(body.password, 12);
 
 		let user = await model.create({

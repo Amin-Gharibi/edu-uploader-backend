@@ -4,6 +4,7 @@ const isAdmin = require("../middlewares/isAdmin")
 const isAuthenticated = require("../middlewares/isAuth")
 const controller = require("../controllers/user")
 const uploadControllers = require("../controllers/upload")
+const isAdminOrSupervisor = require("../middlewares/isAdminOrSupervisor")
 
 const router = express.Router();
 
@@ -18,15 +19,7 @@ router
 
 router
 	.route('/uploads')
-	.get(isAuthenticated, uploadControllers.getUserUploads) // this is for user viewing his uploads
-
-router
-	.route('/uploads/:id')
-	.get(isAuthenticated, isAdmin, uploadControllers.getUserUploads) // this is for admin viewing who has uploaded what
-
-router
-	.route('/role')
-	.put(isAuthenticated, isAdmin, controller.changeRole) // this is for admin changing users role
+	.get(isAuthenticated, isAdminOrSupervisor, controller.getUserRelatedUploads)
 
 
 module.exports = router;

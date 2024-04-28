@@ -1,5 +1,15 @@
 const model = require("../models/headerSubMenu");
 
+exports.getAll = async (req, res, next) => {
+	try {
+		const headerSubMenus = await model.find().lean()
+
+		return res.status(200).json([...headerSubMenus])
+	} catch (e) {
+		next(e)
+	}
+}
+
 exports.create = async (req, res, next) => {
 	try {
 		const validatedFields = await model.createValidation(req.body).catch(err => {

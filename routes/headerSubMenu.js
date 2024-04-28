@@ -8,6 +8,7 @@ const router = express.Router();
 
 router
 	.route('/')
+	.get(isAuthenticated, isAdmin, controller.getAll)
 	.post(isAuthenticated, isAdmin, controller.create)
 
 router

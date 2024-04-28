@@ -32,7 +32,7 @@ exports.create = async (req, res, next) => {
 
 		const createdDoc = await model.create(validatedFields);
 
-		return res.status(201).json({message: "با موفقیت اضافه شد", createdDoc})
+		return res.status(201).json({message: "با موفقیت اضافه شد", headerMenu: createdDoc})
 	} catch (e) {
 		next(e)
 	}
@@ -70,6 +70,12 @@ exports.delete = async (req, res, next) => {
 		if (!targetDoc) {
 			return res.status(404).json({message: "همچین فایلی یافت نشد"})
 		}
+
+		const targetHeaderMenusSubMenus = await headerSubMenuModel.find({parent: targetDoc._id})
+
+		targetHeaderMenusSubMenus.forEach(async subMenu => {
+			await headerSubMenuModel.findByIdAndDelete(subMenu._id)
+		})
 
 		await model.findByIdAndDelete(id)
 

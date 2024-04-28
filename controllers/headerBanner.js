@@ -22,7 +22,7 @@ exports.create = async (req, res, next) => {
 
 		const createdDoc = await model.create(validatedFields);
 
-		return res.status(201).json({message: "با موفقیت اضافه شد", createdDoc})
+		return res.status(201).json({message: "با موفقیت اضافه شد", headerBanner: createdDoc})
 	} catch (e) {
 		next(e)
 	}

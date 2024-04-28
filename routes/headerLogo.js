@@ -13,8 +13,4 @@ router
 	.get(controller.get)
 	.post(isAuthenticated, isAdmin, multer({ storage: multerStorage.logoStorage, limits: { fileSize: 1000000000 } }).single("logo"), controller.create);
 
-router
-	.route('/:id')
-	.put(isAuthenticated, isAdmin, multer({ storage: multerStorage.logoStorage, limits: { fileSize: 1000000000 } }).single("logo"), controller.edit);
-
 module.exports = router;

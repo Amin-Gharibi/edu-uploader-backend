@@ -17,9 +17,6 @@ const headerLogo = new mongoose.Schema(
 headerLogo.statics.createValidation = function (body) {
 	return createValidator.validate(body, { abortEarly: false })
 }
-headerLogo.statics.editValidation = function (body) {
-	return editValidator.validate(body, { abortEarly: false })
-}
 
 const model = new mongoose.model("HeaderLogo", headerLogo)
 

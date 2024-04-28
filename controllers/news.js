@@ -4,7 +4,7 @@ const fs = require("fs")
 
 exports.getAll = async (req, res, next) => {
 	try {
-		const news = await model.find().lean();
+		const news = await model.find().populate('writer').lean();
 
 		return res.status(200).json([...news])
 	} catch (e) {
@@ -63,9 +63,10 @@ exports.create = async (req, res, next) => {
 			throw err
 		})
 
-		const createdDoc = await model.create({ ...validatedFields, writer: req.user._id });
+		let createdDoc = await model.create({ ...validatedFields, writer: req.user._id });
+		createdDoc = await createdDoc.populate('writer');
 
-		return res.status(201).json({ message: "با موفقیت اضافه شد", createdDoc })
+		return res.status(201).json({ message: "با موفقیت اضافه شد", news: createdDoc })
 	} catch (e) {
 		next(e)
 	}

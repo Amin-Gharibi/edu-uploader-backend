@@ -75,7 +75,9 @@ exports.login = async (req, res, next) => {
 
 exports.getMe = async (req, res, next) => {
 	try {
-
+		const user = req.user
+		delete user.role;
+		return res.status(200).json([user])
 	} catch (e) {
 		next(e)
 	}

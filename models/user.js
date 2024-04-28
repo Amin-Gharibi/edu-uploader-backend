@@ -1,6 +1,6 @@
 const mongoose = require("mongoose")
 
-const {deleteValidator, editValidator} = require("../validators/user")
+const {deleteValidator, editValidator, changePasswordValidator} = require("../validators/user")
 const {changeRoleValidator} = require("../validators/user");
 const {registerValidator, loginValidator} = require("../validators/auth");
 
@@ -44,6 +44,9 @@ userSchema.statics.registerValidation = function (body) {
 userSchema.statics.loginValidation = function (body) {
 	return loginValidator.validate(body, { abortEarly: false })
 };
+userSchema.statics.changePasswordValidation = function (body) {
+	return changePasswordValidator.validate(body, { abortEarly: false })
+}
 
 //* panel
 userSchema.statics.deleteUserValidation = function (body) {

@@ -11,11 +11,15 @@ const router = express.Router();
 router
 	.route('/')
 	.get(isAuthenticated, isAdmin, controller.getAll) // this is for getting all users
+	.put(isAuthenticated, isAdmin, controller.editUser) // this is for editing user
 
 router
 	.route('/:id')
-	.put(isAuthenticated, isAdmin, controller.adminEditingUsers) // this is for editing user
 	.delete(isAuthenticated, isAdmin, controller.delete) // this is for removing user from db
+
+router
+	.route('/password')
+	.put(isAuthenticated, controller.changePassword)
 
 router
 	.route('/uploads')

@@ -19,9 +19,7 @@ const changeRoleValidator = yup.object().shape({
 
 const editValidator = yup.object().shape({
 	id: yup
-		.string()
-		.required("شناسه کاربر الزامی است")
-		.matches(/^[0-9a-fA-F]{24}$/, "شناسه کاربر معتبر نیست"),
+		.string(),
 	username: yup.string(),
 	password: yup.string(),
 	firstName: yup.string(),
@@ -31,8 +29,16 @@ const editValidator = yup.object().shape({
 	focusedSubject: yup.string()
 })
 
+const changePasswordValidator =  yup.object().shape({
+	currentPassword:
+		yup.string().required("وارد کردن پسورد کنونی الزامی است"),
+	newPassword:
+		yup.string().required("وارد کردن پسورد جدید الزامی است")
+})
+
 module.exports = {
 	deleteValidator,
 	editValidator,
-	changeRoleValidator
+	changeRoleValidator,
+	changePasswordValidator
 }

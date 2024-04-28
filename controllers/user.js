@@ -12,10 +12,12 @@ exports.getAll = async (req, res, next) => {
 	}
 }
 
-exports.adminEditingUsers = async (req, res, next) => {
+exports.editUser = async (req, res, next) => {
 	try {
 		const validatedFields = await model.editUserValidation({...req.body, ...req.params})
 		let {id, ...updatingFields} = validatedFields
+
+		id = id || req.user._id;
 
 		updatingFields.password = updatingFields.password ? await bcrypt.hash(updatingFields.password, 12) : undefined;
 
@@ -55,6 +57,36 @@ exports.getUserRelatedUploads = async (req, res, next) => {
 		}
 
 		return res.status(200).json([...uploads])
+	} catch (e) {
+		next(e)
+	}
+}
+
+exports.changePassword = async (req, res, next) => {
+	try {
+		const {currentPassword, newPassword} = await model.changePasswordValidation({...req.params, ...req.body})
+
+		const id = req.user._id
+
+		const targetUser = await model.findById(id);
+
+		if (!targetUser) {
+			return res.status(404).json({message: "کاربر یافت نشد"})
+		}
+
+		const isValid = await bcrypt.compare(currentPassword, targetUser.password)
+
+		if (!isValid) {
+			return res.status(400).json({message: "رمز عبور صحیح نیست"})
+		}
+
+		const hashedNewPassword = await bcrypt.hash(newPassword, 12)
+
+		await model.findByIdAndUpdate(id, {
+			password: hashedNewPassword
+		})
+
+		return res.status(200).json({message: "رمز عبور با موفقیت تغییر کرد"})
 	} catch (e) {
 		next(e)
 	}

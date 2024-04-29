@@ -1,9 +1,32 @@
 const path = require("path");
 const fs = require("fs")
 const express = require("express");
+const bcrypt = require('bcrypt')
 const { setHeaders } = require("./middlewares/headers");
 const { errorHandler } = require("./middlewares/errors");
 const staticPaths = require("./util/static");
+const usersModel = require("./models/user")
+
+// create default admin user
+const createDefaultUser = async () => {
+	const users = await usersModel.find()
+	if (!users.length) {
+		const hashedPassword = await bcrypt.hash('Admin', 12)
+
+		const user = {
+			username: 'Admin',
+			password: hashedPassword,
+			firstName: 'ادمین',
+			lastName: 'ادمین',
+			areaName: 'میناب',
+			provinceName: 'هرمزگان',
+			role: 'ADMIN'
+		}
+		await usersModel.create({...user})
+	}
+}
+
+createDefaultUser()
 
 
 //*routes import

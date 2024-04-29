@@ -2,3 +2,5 @@ node_modules
 .idea
 .env
 public
+frontend
+util/static.js

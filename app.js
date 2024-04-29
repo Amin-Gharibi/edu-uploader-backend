@@ -3,6 +3,8 @@ const fs = require("fs")
 const express = require("express");
 const { setHeaders } = require("./middlewares/headers");
 const { errorHandler } = require("./middlewares/errors");
+const staticPaths = require("./util/static");
+
 
 //*routes import
 const authRoutes = require("./routes/auth")
@@ -15,6 +17,7 @@ const newsRoutes = require("./routes/news")
 const sidebarMenuRoutes = require("./routes/sidebarMenu")
 const focusedSubjectRoutes = require("./routes/focusedSubject")
 const headerLogoRoutes = require("./routes/headerLogo")
+const pagesRoutes = require("./routes/pagesRoutes")
 
 const app = express();
 
@@ -36,6 +39,8 @@ app.use(setHeaders);
 //* Static Folder
 app.use(express.static(path.join(__dirname, "public")));
 
+
+app.use("/", express.static(staticPaths.staticContent), pagesRoutes)
 //* Routes
 app.use("/api/auth", authRoutes);
 app.use("/api/user", userRoutes);
@@ -51,7 +56,7 @@ app.use("/api/headerLogo", headerLogoRoutes);
 //* Error Controller
 app.use((req, res) => {
 	console.log("this path is not available:", req.path);
-	res.status(404).json({ message: "404 OOPS! PATH NOT FOUND" });
+	res.status(404).sendFile(staticPaths[404])
 });
 app.use(errorHandler);
 

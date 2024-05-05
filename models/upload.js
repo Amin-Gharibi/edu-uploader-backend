@@ -27,6 +27,9 @@ const uploadsSchema = new mongoose.Schema(
 			type: String,
 			enum: ["MALE", "FEMALE"]
 		},
+		schoolArea: {
+			type: String
+		},
 		participants: [
 			participantsSchema
 		],

@@ -32,7 +32,7 @@ exports.create = async (req, res, next) => {
 	try {
 		const file = req.files.file[0].filename
 		const examplePages = []
-		req.files.examplePages.forEach(page => {
+		req.files?.examplePages?.forEach(page => {
 			examplePages.push(page.filename)
 		});
 

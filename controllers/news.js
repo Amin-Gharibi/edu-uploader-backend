@@ -75,7 +75,7 @@ exports.create = async (req, res, next) => {
 exports.edit = async (req, res, next) => {
 	try {
 		const cover = Boolean(req.file?.filename) ? req.file.filename : undefined;
-		const validatedFields = await model.createValidation({ ...req.body, ...req.params, cover }).catch(err => {
+		const validatedFields = await model.editValidation({ ...req.body, ...req.params, cover }).catch(err => {
 			err.statusCode = 400
 			throw err
 		})
@@ -93,7 +93,7 @@ exports.edit = async (req, res, next) => {
 				__dirname,
 				"..",
 				"public",
-				"news",
+				"newsStorage",
 				targetDoc.cover
 			);
 
@@ -126,7 +126,7 @@ exports.delete = async (req, res, next) => {
 			__dirname,
 			"..",
 			"public",
-			"news",
+			"newsStorage",
 			targetDoc.cover
 		);
 

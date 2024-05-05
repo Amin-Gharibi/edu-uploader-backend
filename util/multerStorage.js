@@ -26,7 +26,7 @@ module.exports.headerBannersStorage = multer.diskStorage({
 
 module.exports.newsStorage = multer.diskStorage({
 	destination: (req, file, cb) => {
-		cb(null, path.join(__dirname, '..', 'public', 'news'));
+		cb(null, path.join(__dirname, '..', 'public', 'newsStorage'));
 	},
 	filename: (req, file, cb) => {
 		const sha256 = crypto.createHash('SHA256');

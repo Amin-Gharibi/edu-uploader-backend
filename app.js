@@ -49,7 +49,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
 // create dynamic-content container folder
-const uploadDirectories = [path.join("public", 'uploadedFiles'), path.join("public", "headerBanners"), path.join("public", "news"), path.join("public", "logo")]
+const uploadDirectories = [path.join("public", 'uploadedFiles'), path.join("public", "headerBanners"), path.join("public", "newsStorage"), path.join("public", "logo")]
 uploadDirectories.forEach(dir => {
 	if (!fs.existsSync(dir)){
 		fs.mkdirSync(dir, { recursive: true });

@@ -12,22 +12,6 @@ exports.getAll = async (req, res, next) => {
 	}
 }
 
-exports.getUserUploads = async (req, res, next) => {
-	try {
-		const userId = req.params.id || req.user._id
-		const { id } = await model.getUserUploadsValidation({...req.params, id: userId}).catch(err => {
-			err.statusCode = 400
-			throw err
-		})
-
-		const userUploads = await model.find({uploaderUser: id});
-
-		return res.status(200).json([...userUploads])
-	} catch (e) {
-		next(e)
-	}
-}
-
 exports.create = async (req, res, next) => {
 	try {
 		const file = req.files.file[0].filename

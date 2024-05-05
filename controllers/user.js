@@ -12,21 +12,40 @@ exports.getAll = async (req, res, next) => {
 	}
 }
 
+exports.getOneByAdmin = async (req, res, next) => {
+	try {
+		const userId = req.params.id
+		if (!userId) {
+			return res.status(401).json({message: "ایدی کاربر باید پاس داده شود"})
+		}
+
+		const targetUser = await model.findById(userId, '-password').populate('focusedSubject')
+
+		return res.status(200).json({message: "واکشی کاربر موفقیت آمیز بود", user: targetUser})
+	} catch (e) {
+		next(e)
+	}
+}
+
 exports.editUser = async (req, res, next) => {
 	try {
 		const validatedFields = await model.editUserValidation({...req.body, ...req.params})
 		let {id, ...updatingFields} = validatedFields
 
+		if (id && req.user.role !== 'ADMIN') {
+			return res.status(401).json({message: "این عمل فقط برای ادمین ها در دسترس است"})
+		}
+
 		id = id || req.user._id;
 
 		updatingFields.password = updatingFields.password ? await bcrypt.hash(updatingFields.password, 12) : undefined;
 
-		await model.findByIdAndUpdate(id, {...updatingFields}).catch(err => {
+		const updatedUser = await model.findByIdAndUpdate(id, {...updatingFields}).catch(err => {
 			err.statusCode = 500
 			throw err
 		})
 
-		return res.status(201).json({message: "کاربر با موفقیت ادیت شد"})
+		return res.status(201).json({message: "کاربر با موفقیت ویرایش شد", user: updatedUser })
 	} catch (e) {
 		next(e)
 	}

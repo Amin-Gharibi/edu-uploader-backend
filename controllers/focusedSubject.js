@@ -42,7 +42,7 @@ exports.create = async (req, res, next) => {
 
 		const createdFocusedSubject = await model.create({...validatedData})
 
-		return res.status(201).json({message: "محور با موفقیت ایجاد شد", focusedSubjectg: createdFocusedSubject})
+		return res.status(201).json({message: "محور با موفقیت ایجاد شد", focusedSubject: createdFocusedSubject})
 	} catch (e) {
 		next(e)
 	}

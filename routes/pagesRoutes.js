@@ -1,6 +1,7 @@
 const express = require('express');
 const paths = require("../util/static");
 const newsModel = require("../models/news");
+const focusedSubjectModel = require("../models/focusedSubject");
 
 const router = express.Router()
 
@@ -35,8 +36,14 @@ router
 	})
 
 router
-	.route('/upload')
-	.get((req, res) => {
+	.route('/upload/:focusedSubject')
+	.get(async (req, res) => {
+		const isAvailable = await focusedSubjectModel.findOne({enTitle: req.params.focusedSubject})
+		
+		if (!isAvailable) {
+			return res.status(404).sendFile(paths[404])
+		}
+
 		return res.sendFile(paths.upload);
 	})
 

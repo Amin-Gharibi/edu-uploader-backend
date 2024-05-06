@@ -12,6 +12,24 @@ exports.getAll = async (req, res, next) => {
 	}
 }
 
+exports.getOne = async (req, res, next) => {
+	try {
+		const {id} = await model.getOneValidation({...req.params}).catch(err => {
+			err.statusCode = 400
+			throw err
+		})
+
+		const targetDoc = await model.findById(id)
+		if (!targetDoc) {
+			return res.status(404).json({message: "بنر مورد نظر یافت نشد"})
+		}
+
+		return res.status(200).json({message: "بنر با موفقیت واکشی شد", headerBanner: targetDoc})
+	} catch (e) {
+		next(e)
+	}
+}
+
 exports.create = async (req, res, next) => {
 	try {
 		const cover = Boolean(req.file?.filename) ? req.file.filename : undefined;
@@ -31,7 +49,7 @@ exports.create = async (req, res, next) => {
 exports.edit = async (req, res, next) => {
 	try {
 		const cover = Boolean(req.file?.filename) ? req.file.filename : undefined;
-		const validatedFields = await model.createValidation({...req.body, ...req.params, cover}).catch(err => {
+		const validatedFields = await model.editValidation({...req.body, ...req.params, cover}).catch(err => {
 			err.statusCode = 400
 			throw err
 		})

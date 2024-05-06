@@ -29,8 +29,16 @@ const deleteValidator = yup.object().shape({
 		.matches(/^[0-9a-fA-F]{24}$/, "شناسه کاور معتبر نیست")
 })
 
+const getOneValidator = yup.object().shape({
+	id: yup
+		.string()
+		.required("شناسه بنر الزامی است")
+		.matches(/^[0-9a-fA-F]{24}$/, "شناسه بنر معتبر نیست")
+})
+
 module.exports = {
 	createValidator,
 	editValidator,
-	deleteValidator
+	deleteValidator,
+	getOneValidator
 }

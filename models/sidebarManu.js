@@ -1,5 +1,6 @@
 const mongoose = require("mongoose")
-const {createValidator, editValidator, deleteValidator} = require("../validators/sidebarMenu");
+const { createValidator, editValidator, deleteValidator } = require("../validators/sidebarMenu");
+const { getOneValidator } = require("../validators/headerMenu");
 
 const sidebarManuSchema = new mongoose.Schema(
 	{
@@ -14,6 +15,9 @@ const sidebarManuSchema = new mongoose.Schema(
 )
 
 
+sidebarManuSchema.statics.getOneValidation = function (body) {
+	return getOneValidator.validate(body, { abortEarly: false })
+}
 sidebarManuSchema.statics.createValidation = function (body) {
 	return createValidator.validate(body, { abortEarly: false })
 }

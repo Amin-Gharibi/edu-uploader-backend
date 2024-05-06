@@ -11,6 +11,24 @@ exports.getAll = async (req, res, next) => {
 	}
 }
 
+exports.getOne = async (req, res, next) => {
+	try {
+		const {id} = await model.getOneValidation({...req.params}).catch(err => {
+			err.statusCode = 400
+			throw err
+		})
+
+		const targetDoc = await model.findById(id)
+		if (!targetDoc) {
+			return res.status(404).json({message: "لینک سریع مورد نظر یافت نشد"})
+		}
+
+		return res.status(200).json({message: "واکشی موفقیت آمیز", sidebarMenu: targetDoc})
+	} catch (e) {
+		next(e)
+	}
+}
+
 exports.create = async (req, res, next) => {
 	try {
 		const validatedFields = await model.createValidation(req.body).catch(err => {

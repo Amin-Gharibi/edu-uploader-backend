@@ -13,6 +13,7 @@ router
 
 router
 	.route('/:id')
+	.get(isAuthenticated, isAdmin, controller.getOne)
 	.delete(isAuthenticated, isAdmin, controller.delete)
 	.put(isAuthenticated, isAdmin, controller.edit)
 

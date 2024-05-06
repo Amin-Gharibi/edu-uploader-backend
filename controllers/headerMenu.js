@@ -23,6 +23,27 @@ exports.getAll = async (req, res, next) => {
 	}
 }
 
+exports.getOne = async (req, res, next) => {
+	try {
+		const {id} = await model.getOneValidation({...req.params}).catch(e => {
+			e.statusCode = 400
+			throw e
+		})
+
+		const headerMenu = await model.findById(id)
+		if (!headerMenu) {
+			return res.status(404).json({message: "منو مورد نظر یافت نشد"})
+		}
+		const headerSubMenus = await headerSubMenuModel.find({parent: id})
+
+		headerMenu._doc.subMenus = headerSubMenus
+
+		return res.status(200).json({message: "با موفقیت واکشی شد", headerMenu})
+	} catch (e) {
+		next(e)
+	}
+}
+
 exports.create = async (req, res, next) => {
 	try {
 		const validatedFields = await model.createValidation(req.body).catch(err => {

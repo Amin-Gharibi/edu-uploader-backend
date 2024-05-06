@@ -7,6 +7,13 @@ const createValidator = yup.object().shape({
 	href: yup.string()
 })
 
+const getOneValidator = yup.object().shape({
+	id: yup
+		.string()
+		.required("شناسه منو الزامی است")
+		.matches(/^[0-9a-fA-F]{24}$/, "شناسه منو معتبر نیست")
+})
+
 const editValidator = yup.object().shape({
 	id: yup
 		.string()
@@ -27,5 +34,6 @@ const deleteValidator = yup.object().shape({
 module.exports = {
 	createValidator,
 	editValidator,
-	deleteValidator
+	deleteValidator,
+	getOneValidator
 }

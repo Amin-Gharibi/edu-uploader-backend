@@ -20,14 +20,14 @@ exports.create = async (req, res, next) => {
 			examplePages.push(page.filename)
 		});
 
-		const validatedFields = await model.createValidation({...req.body, file, examplePages}).catch(err => {
+		const validatedFields = await model.createValidation({ ...req.body, file, examplePages }).catch(err => {
 			err.statusCode = 400
 			throw err
 		})
 
-		const createdDoc = await model.create({...validatedFields})
+		const createdDoc = await model.create({ ...validatedFields })
 
-		return res.status(201).json({message: "با موفقیت اضافه شد", createdDoc})
+		return res.status(201).json({ message: "با موفقیت اضافه شد", createdDoc })
 	} catch (e) {
 		next(e)
 	}
@@ -35,35 +35,33 @@ exports.create = async (req, res, next) => {
 
 exports.delete = async (req, res, next) => {
 	try {
-		const { id } = await model.deleteValidation({...req.params});
+		const { id } = await model.deleteValidation({ ...req.params });
 
 		const targetDoc = await model.findById(id)
 
 		if (!targetDoc) {
-			return res.status(404).json({message: "همچین فایلی یافت نشد"})
+			return res.status(404).json({ message: "همچین پروژه ای یافت نشد" })
 		}
 
-		if (targetDoc.uploaderUser.equals(req.user._id) || req.user.role === 'ADMIN') {
-			const filePath = path.join(
-				__dirname,
-				"..",
-				"public",
-				"uploadedFiles",
-				targetDoc.file
-			);
 
-			fs.unlink(filePath, async (err) => {
-				if (err) {
-					console.log(err);
-				}
-			});
+		const filePath = path.join(
+			__dirname,
+			"..",
+			"public",
+			"uploadedFiles",
+			targetDoc.file
+		);
 
-			await model.findByIdAndDelete(id)
-		} else {
-			return res.status(401).json({message: "you are not authorized to delete this item"})
-		}
+		fs.unlink(filePath, async (err) => {
+			if (err) {
+				console.log(err);
+			}
+		});
 
-		return res.status(201).json({message: "با موفقیت حذف شد"})
+		await model.findByIdAndDelete(id)
+
+
+		return res.status(201).json({ message: "با موفقیت حذف شد" })
 	} catch (e) {
 		next(e)
 	}

@@ -22,6 +22,6 @@ router
 
 router
 	.route('/:id')
-	.delete(isAuthenticated, controller.delete) // this is for user deleting his uploaded docs and admin deleting everyone's uploads
+	.delete(isAuthenticated, isAdmin, controller.delete) // this is for user deleting his uploaded docs and admin deleting everyone's uploads
 
 module.exports = router;

@@ -26,7 +26,7 @@ router
 router
 	.route('/news/:id')
 	.get(async (req, res) => {
-		const isAvailable = await newsModel.findById(req.params._id)
+		const isAvailable = await newsModel.findById(req.params.id)
 
 		if (!isAvailable) {
 			return res.status(404).sendFile(paths[404])
